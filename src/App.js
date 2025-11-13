@@ -12,12 +12,14 @@ import DailyList from "./pages/DailyPlanListPage";
 import AddDailyData from "./pages/AddDailyPlanPage";
 import EditDailyData from "./pages/EditDailyPlanPage";
 import DailyPlanFormPage from "./pages/DailyPlanFormPage";
+import LandingPage from "./pages/Landing";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<RecipesListPage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/recipes" element={<RecipesListPage />} />
         <Route path="/recipes/add" element={<AddRecipePage />} />
         <Route path="/recipes/edit/:id" element={<EditRecipePage />} />
         <Route path="/yoga" element={<YogaListPage />} />

@@ -28,7 +28,7 @@ export default function EditRecipePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(recipe),
       });
-      navigate("/");
+      navigate("/recipes");
     } catch (err) {
       console.error(err);
     }
@@ -37,21 +37,100 @@ export default function EditRecipePage() {
   if (!recipe) return <div>Loading...</div>;
 
   return (
-    <div style={{ padding: "24px", maxWidth: "600px", margin: "0 auto" }}>
-      <h1>Edit Recipe</h1>
-      <input placeholder="Title" value={recipe.title || ""} onChange={(e) => setRecipe({ ...recipe, title: e.target.value })} />
-      <input placeholder="Description" value={recipe.description || ""} onChange={(e) => setRecipe({ ...recipe, description: e.target.value })} />
-      <input placeholder="Image URL" value={recipe.image || ""} onChange={(e) => setRecipe({ ...recipe, image: e.target.value })} />
-      <input placeholder="Video URL" value={recipe.video || ""} onChange={(e) => setRecipe({ ...recipe, video: e.target.value })} />
-      <input placeholder="Tags (comma separated)" value={(recipe.tags || []).join(", ")} onChange={(e) => setRecipe({ ...recipe, tags: e.target.value.split(",").map(t => t.trim()) })} />
-      <input placeholder="Prep Time" value={recipe.prepTime || ""} onChange={(e) => setRecipe({ ...recipe, prepTime: e.target.value })} />
-      <input placeholder="Cook Time" value={recipe.cookTime || ""} onChange={(e) => setRecipe({ ...recipe, cookTime: e.target.value })} />
-      <textarea placeholder="Ingredients (one per line)" value={(recipe.ingredients || []).join("\n")} onChange={(e) => setRecipe({ ...recipe, ingredients: e.target.value.split("\n") })}></textarea>
-      <textarea placeholder="Steps (one per line)" value={(recipe.steps || []).join("\n")} onChange={(e) => setRecipe({ ...recipe, steps: e.target.value.split("\n") })}></textarea>
+    <div
+      style={{
+        padding: 24,
+        maxWidth: 700,
+        margin: "40px auto",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#fff",
+          padding: 32,
+          borderRadius: 12,
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+        }}
+      >
+        <h1 style={{ fontSize: 28, marginBottom: 24, color: "#333" }}>Edit Recipe</h1>
 
-      <button onClick={handleUpdate} style={{ marginTop: "16px", padding: "8px 16px", backgroundColor: "#f97316", color: "#fff" }}>
-        Update Recipe
-      </button>
+        {/* Input fields */}
+        {[
+          { label: "Title", value: recipe.title || "", key: "title" },
+          { label: "Description", value: recipe.description || "", key: "description" },
+          { label: "Image URL", value: recipe.image || "", key: "image" },
+          { label: "Video URL", value: recipe.video || "", key: "video" },
+          { label: "Tags (comma separated)", value: (recipe.tags || []).join(", "), key: "tags" },
+          { label: "Prep Time", value: recipe.prepTime || "", key: "prepTime" },
+          { label: "Cook Time", value: recipe.cookTime || "", key: "cookTime" },
+        ].map((field) => (
+          <input
+            key={field.key}
+            placeholder={field.label}
+            value={field.value}
+            onChange={(e) => {
+              if (field.key === "tags") {
+                setRecipe({ ...recipe, tags: e.target.value.split(",").map((t) => t.trim()) });
+              } else {
+                setRecipe({ ...recipe, [field.key]: e.target.value });
+              }
+            }}
+            style={{
+              width: "100%",
+              padding: "12px 16px",
+              marginBottom: 16,
+              borderRadius: 8,
+              border: "1px solid #ccc",
+              fontSize: 16,
+            }}
+          />
+        ))}
+
+        {/* Textareas */}
+        {[
+          { label: "Ingredients (one per line)", value: (recipe.ingredients || []).join("\n"), key: "ingredients" },
+          { label: "Steps (one per line)", value: (recipe.steps || []).join("\n"), key: "steps" },
+        ].map((field) => (
+          <textarea
+            key={field.key}
+            placeholder={field.label}
+            value={field.value}
+            onChange={(e) => setRecipe({ ...recipe, [field.key]: e.target.value.split("\n") })}
+            style={{
+              width: "100%",
+              padding: "12px 16px",
+              marginBottom: 16,
+              borderRadius: 8,
+              border: "1px solid #ccc",
+              fontSize: 16,
+              minHeight: 100,
+              resize: "vertical",
+            }}
+          />
+        ))}
+
+        {/* Update Button */}
+        <button
+          onClick={handleUpdate}
+          style={{
+            width: "100%",
+            padding: "14px 0",
+            backgroundColor: "#f97316",
+            color: "#fff",
+            fontWeight: 600,
+            fontSize: 16,
+            border: "none",
+            borderRadius: 8,
+            cursor: "pointer",
+            transition: "background-color 0.2s",
+          }}
+          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#ea580c")}
+          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#f97316")}
+        >
+          Update Recipe
+        </button>
+      </div>
     </div>
   );
 }

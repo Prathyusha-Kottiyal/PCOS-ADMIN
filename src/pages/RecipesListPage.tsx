@@ -21,7 +21,6 @@ export default function RecipesListPage() {
       const res = await fetch(`${API_URL}?page=${page}&limit=${limit}`);
       const data = await res.json();
       setRecipes(data.data);
-      // Optional: if your backend sends total count, calculate total pages
       if (data.totalCount) setTotalPages(Math.ceil(data.totalCount / limit));
     } catch (err) {
       console.error(err);
@@ -31,8 +30,6 @@ export default function RecipesListPage() {
   useEffect(() => {
     fetchRecipes(page);
   }, [page]);
-
-  console.log(recipes)
 
   const deleteRecipe = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this recipe?")) return;
@@ -45,30 +42,84 @@ export default function RecipesListPage() {
   };
 
   return (
-    <div style={{ padding: "24px", maxWidth: "800px", margin: "0 auto" }}>
-      <h1>Recipes</h1>
-      <Link to="/recipes/add">
-        <button style={{ marginBottom: "16px", padding: "8px 16px", backgroundColor: "#f97316", color: "#fff" }}>Add Recipe</button>
-      </Link>
+    <div style={{ padding: 24, maxWidth: 900, margin: "0 auto", fontFamily: "Arial, sans-serif" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+        <h1 style={{ fontSize: 28, color: "#333" }}>Recipes</h1>
+        <Link to="/recipes/add">
+          <button
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "#f97316",
+              color: "#fff",
+              border: "none",
+              borderRadius: 6,
+              cursor: "pointer",
+              fontWeight: 600,
+            }}
+          >
+            + Add Recipe
+          </button>
+        </Link>
+      </div>
 
-      {recipes.map((r) => (
-        <RecipeCard
-          key={r._id}
-          id={r._id}
-          title={r.title}
-          description={r.description}
-          onEdit={() => window.location.assign(`/recipes/edit/${r._id}`)}
-          onDelete={() => deleteRecipe(r._id)}
-        />
-      ))}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+          gap: 16,
+        }}
+      >
+        {recipes.map((r) => (
+          <RecipeCard
+            key={r._id}
+            id={r._id}
+            title={r.title}
+            description={r.description}
+            onEdit={() => window.location.assign(`/recipes/edit/${r._id}`)}
+            onDelete={() => deleteRecipe(r._id)}
+          />
+        ))}
+      </div>
 
       {/* Pagination */}
-      <div style={{ marginTop: "16px" }}>
-        <button disabled={page <= 1} onClick={() => setPage(page - 1)} style={{ marginRight: "8px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 24,
+          gap: 12,
+        }}
+      >
+        <button
+          disabled={page <= 1}
+          onClick={() => setPage(page - 1)}
+          style={{
+            padding: "8px 16px",
+            backgroundColor: page <= 1 ? "#ccc" : "#f97316",
+            color: "#fff",
+            border: "none",
+            borderRadius: 4,
+            cursor: page <= 1 ? "not-allowed" : "pointer",
+          }}
+        >
           Previous
         </button>
-        <span>Page {page}</span>
-        <button disabled={page >= totalPages} onClick={() => setPage(page + 1)} style={{ marginLeft: "8px" }}>
+        <span style={{ fontWeight: 600, color: "#333" }}>
+          Page {page} of {totalPages}
+        </span>
+        <button
+          disabled={page >= totalPages}
+          onClick={() => setPage(page + 1)}
+          style={{
+            padding: "8px 16px",
+            backgroundColor: page >= totalPages ? "#ccc" : "#f97316",
+            color: "#fff",
+            border: "none",
+            borderRadius: 4,
+            cursor: page >= totalPages ? "not-allowed" : "pointer",
+          }}
+        >
           Next
         </button>
       </div>
