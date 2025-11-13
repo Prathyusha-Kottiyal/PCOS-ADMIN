@@ -28,6 +28,7 @@ export default function EditDailyPlanPage() {
 
   // Fetch existing daily plan
   useEffect(() => {
+   
     const fetchPlan = async () => {
       const res = await fetch(`${API_URL}/dailyPlan/${id}`);
       const data = await res.json();

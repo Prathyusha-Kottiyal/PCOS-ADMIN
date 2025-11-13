@@ -9,8 +9,6 @@ import AddYogaPage from "./pages/AddYogaPage";
 import EditYogaPage from "./pages/EditYogaPage";
 
 import DailyList from "./pages/DailyPlanListPage";
-import AddDailyData from "./pages/AddDailyPlanPage";
-import EditDailyData from "./pages/EditDailyPlanPage";
 import DailyPlanFormPage from "./pages/DailyPlanFormPage";
 import LandingPage from "./pages/Landing";
 
@@ -32,7 +30,7 @@ export default function App() {
 
         <Route path="/dailyplan" element={<DailyList />} />
         <Route path="/dailyplan/add" element={<DailyPlanFormPage mode="add"/>} />
-        <Route path="/dailyplan/edit/:id" element={<DailyPlanFormPage mode="edit"/>} />
+        <Route path="/dailyplan/edit/:day" element={<DailyPlanFormPage mode="edit"/>} />
       </Routes>
     </BrowserRouter>
   );
